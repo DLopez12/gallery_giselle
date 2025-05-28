@@ -1,0 +1,13 @@
+# .gitignore in /project-root
+
+# OS / IDE junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Env
+.env
