@@ -1,0 +1,13 @@
+@layer utilities {
+  /* Better image rendering for photography */
+  .photo-rendering {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Drop shadow that matches camera RAW shadows */
+  .photo-shadow {
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.02), 
+                0 2px 8px rgb(0 0 0 / 0.08);
+  }
+}
