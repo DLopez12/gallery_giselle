@@ -46,8 +46,8 @@ export default {
 
       // 4. Typography (Elegant display fonts)
       fontFamily: {
-        display: ['"Playfair Display"', 'serif'], // For headings
-        sans: ['"Inter"', 'sans-serif'],         // Body text
+        display: ['"Hanken Grotesk Variable"', 'sans-serif'], // For headings
+        sans: ['"Hanken Grotesk Variable"', 'sans-serif'],         // Body text
       },
     },
   },
