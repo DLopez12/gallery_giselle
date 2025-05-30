@@ -1,1 +1,9 @@
 @import '@fontsource-variable/hanken-grotesk';
+
+:root {
+    --font-hanken: 'Hanken Grotesk Variable', sans-serif;
+}
+
+nav {
+    font-family: var(--font-hanken);
+}
