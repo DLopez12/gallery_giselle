@@ -1,30 +1,19 @@
-// src/router/RouterConfig.jsx
+import { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import NotFound from '../components/common/NotFound';
-// import RequireAuth from '../components/auth/RequireAuth';
+import LoadingSpinner from '../components/common/LoadingSpinner'; // Add a spinner component
 
-// Static imports for critical routes
+// Static imports for critical above-the-fold routes
 import HomePage from '../pages/HomePage';
 import Services from '../pages/Services';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import Bookings from '../pages/Bookings';
 
-// Dynamic imports for heavy routes (modern approach)
-const Portfolio = {
-  lazy: async () => {
-    const module = await import('../pages/Portfolio');
-    return { Component: module.default };
-  }
-};
-
-const PhotoDetail = {
-  lazy: async () => {
-    const module = await import('../components/sections/Portfolio/PhotoDetail');
-    return { Component: module.default };
-  }
-};
+// Modern dynamic imports using React.lazy
+const Portfolio = lazy(() => import('../pages/Portfolio'));
+const PhotoDetail = lazy(() => import('../components/sections/Portfolio/PhotoDetail'));
 
 const router = createBrowserRouter([
   {
@@ -35,13 +24,20 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { 
         path: "portfolio",
-        ...Portfolio // Using dynamic import
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Portfolio />
+          </Suspense>
+        )
       },
       {
         path: "portfolio/:photoId",
-        ...PhotoDetail, // Using dynamic import
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PhotoDetail />
+          </Suspense>
+        ),
         loader: async ({ params }) => {
-          // Temporary mock data - replace with Strapi later
           return {
             id: params.photoId,
             title: "Sample Photo",
@@ -53,14 +49,15 @@ const router = createBrowserRouter([
       { path: "services", element: <Services /> },
       { path: "about", element: <About /> },
       { path: "contact", element: <Contact /> },
-      { 
-        path: "bookings", 
-        element: <Bookings /> // <RequireAuth></RequireAuth> 
-      },
+      { path: "bookings", element: <Bookings /> }
     ],
   },
 ]);
 
 export default function RouterConfig() {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 }
