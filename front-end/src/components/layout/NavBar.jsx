@@ -1,80 +1,27 @@
-import React, { useState } from 'react';
-import logo from "../images/tgc_logo.png";
-import { Link } from 'react-router-dom';
-import '../styles/components/navigation.css';
-import '../styles/global.css';
+import {NavLink, Link } from 'react-router-dom';
 
-const Navbar = () => {
-    const [query, setQuery] = useState('');
-    const [showSearch, setShowSearch] = useState(false);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        console.log('Searching for:', query);
-        // ADD LOGIC FOR HANDLING SEARCH RESULTS
-    };
-
+const NavBar = () => {
     return (
-        <header className="nav-header">
-            <div className="nav-container">
-                <div className="logo">
-                    <Link to='/Home'>
-                        <img src={logo} alt="Tomcat Gin Club logo"  />
-                    </Link>
-                </div>
-        <nav className="nav-menu">
-            <div className="dropdown">
-                <Link to='/Cocktails' className="dropbtn">Cocktails</Link>
-                <div className="dropdown-content">
-                    <a href="#">Classic Cocktails</a>
-                    <a href="#">Modern Classics</a>
-                    <a href="#">Bartender Specials</a>
-                </div>
+        <nav className="fixed top-0 w-full bg-white shadow-md z-50">
+            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+                {/* Logo - use Link */}
             </div>
-            <div className="dropdown">
-            <Link to='/Spirits' className="dropbtn">Spirits</Link>
-                <div className="dropdown-content">
-                    <a href="#">Whiskey</a>
-                    <a href="#">Tequila</a>
-                    <a href="#">Mezcal</a>
-                    <a href="#">Rum</a>
-                    <a href="#">Gin</a>
-                    <a href="#">Vodka</a>
-                    <Link to='/Liqueurs'>Liqueurs & More</Link> 
-                </div>
+            <div className="hidden md:flex space-x-0">
+                <NavLink
+                    to="/portfolio"
+                    className={({ isActive }) =>
+                        `py-2 border-b-2 transition-colors ${
+                            isActive
+                                ? 'border-black text-black font-semibold'
+                                : 'border-transparent text-gray-600 hover:border-gray-300 hover:text-gray-800'
+                        }`
+                    }
+                >
+                    Portfolio
+                </NavLink>
             </div>
-            {/* <div className="dropdown">
-            <Link to='/Community' className="dropbtn">Community</Link>                
-                <div className="dropdown-content">
-                    <a href="#">Learning</a>
-                    <a href="#">Bartender Friends</a>
-                    <a href="#">Forums</a>
-                </div>
-            </div> */}
-            {/* <div className="dropdown">
-            <Link to='/Resources' className="dropbtn">Resources</Link>                
-            <div className="dropdown-content">
-                    <a href="#">Mental Health Resources</a>
-                    <a href="#">Substance Abuse Support</a>
-                    <a href="#">Industy Financial Assitance</a>
-                </div>
-            </div> */}
-            <Link to='/About' className="dropbtn">About</Link>
-            {/* <Link to='/Contact'>Contact</Link> */}
-
-            <button className='search_icon' onClick={() => setShowSearch(!showSearch)}>
-                <i className="fas fa-search"></i>
-            </button>
         </nav>
-    </div>
-    {showSearch && (
-        <div className='search_modal'>
-            <input type='text' className='search_input' placeholder='Search the site...' />
-            <button className='close_search' onClick={() => setShowSearch(false)}>X</button>
-        </div>
-    )}
-        </header>
-    );
+    )
 }
 
-export default Navbar;
+export default NavBar;

@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import NotFound from '../components/common/NotFound';
-import RequireAuth from '../components/auth/RequireAuth';
+// import RequireAuth from '../components/auth/RequireAuth';
 
 // Static imports for critical routes
 import HomePage from '../pages/HomePage';
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "portfolio/:photoId",
-        ...PortfolioDetail, // Using dynamic import
+        ...PhotoDetail, // Using dynamic import
         loader: async ({ params }) => {
           // Temporary mock data - replace with Strapi later
           return {
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { 
         path: "bookings", 
-        element: <RequireAuth><Bookings /></RequireAuth> 
+        element: <Bookings /> // <RequireAuth></RequireAuth> 
       },
     ],
   },
