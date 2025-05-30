@@ -19,9 +19,9 @@ const Portfolio = {
   }
 };
 
-const PortfolioDetail = {
+const PhotoDetail = {
   lazy: async () => {
-    const module = await import('../components/sections/Portfolio/PortfolioDetail');
+    const module = await import('../components/sections/Portfolio/PhotoDetail');
     return { Component: module.default };
   }
 };
