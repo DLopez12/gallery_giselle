@@ -1,3 +1,7 @@
+import MobileHeader from './MobileHeader';
+import NavBar from '../NavBar';
+
+
 const HeaderWrapper = () => {
   return (
     <>

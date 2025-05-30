@@ -95,3 +95,5 @@ const MobileHeader = () => {
         </header>
     );
 };
+
+export default MobileHeader;

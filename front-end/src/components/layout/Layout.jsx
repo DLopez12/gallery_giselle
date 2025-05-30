@@ -1,4 +1,5 @@
 // src/components/layout/Layout.jsx
+import { motion, AnimatePresence } from 'framer-motion';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import HeaderWrapper from './Header/HeaderWrapper';
 import Footer from './Footer';
