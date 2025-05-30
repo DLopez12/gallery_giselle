@@ -70,7 +70,6 @@ $RECYCLE.BIN/
 *.sql
 *.sqlite
 *.sqlite3
-database/data.db
 
 
 ############################
@@ -97,8 +96,6 @@ logs
 results
 node_modules
 .node_history
-.cache/
-npm-debug.log*
 
 ############################
 # Package managers
@@ -125,9 +122,6 @@ coverage
 ############################
 
 .env
-.env.local
-.env.development
-.env.production
 license.txt
 exports
 .strapi
@@ -135,8 +129,3 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
-
-############################
-# IDE
-.vscode/
-.idea/
