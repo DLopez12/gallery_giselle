@@ -7,8 +7,9 @@ const HomePage = () => {
   
   return (
     <div>
-      <NavBar />
-      <Footer />
+      {/* only page specific content here */}
+
+      
     </div>
   );
 };

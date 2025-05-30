@@ -6,7 +6,13 @@ export default {
   ],
   theme: {
     extend: {
-      // 1. Color Palette (Modern oklch() colors)
+      // 1. Breakpoints (Mobile, Tablet, Desktop)
+      screen: {
+        'mobile': {'min': '344px', 'max': '882px'}, // Mobile range
+        'tablet': {'min': '883px', 'max': '1024px'}, // Tablet range
+        'desktop': {'min': '1025px'}, // Desktop and larger
+      },
+      // 2. Color Palette (Modern oklch() colors)
       colors: {
         brand: {
           primary: "oklch(0.62 0.17 183)",  // Vibrant teal
@@ -20,18 +26,20 @@ export default {
         }
       },
 
-      // 2. Aspect Ratios (Critical for photography)
+      // 3. Aspect Ratios
       aspectRatio: {
-        'photo': '3 / 2',       // Standard DSLR ratio
-        'portrait': '2 / 3',    // Vertical shots
-        'square': '1 / 1',      // Instagram-friendly
-        'panorama': '16 / 9',   // Landscape scenes
+        'photo': '3 / 2',
+        'portrait': '2 / 3',
+        'square': '1 / 1',
+        'panorama': '16 / 9',
       },
 
-      // 3. Animation (Smooth gallery transitions)
+      // 4. Animation (Updated with mobile menu animations)
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
         'zoom-in': 'zoomIn 0.3s ease-out',
+        'mobile-fade-in': 'mobileMenuFadeIn 0.3s ease-out forwards',
+        'mobile-fade-out': 'mobileMenuFadeOut 0.2s ease-in forwards',
       },
       keyframes: {
         fadeIn: {
@@ -42,20 +50,32 @@ export default {
           '0%': { transform: 'scale(0.95)', opacity: '0.8' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        // Add these new keyframes:
+        mobileMenuFadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        mobileMenuFadeOut: {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-10px)' },
+        }
       },
 
-      // 4. Typography (Elegant display fonts)
+      // 5. Typography
       fontFamily: {
-        display: ['"Hanken Grotesk Variable"', 'sans-serif'], // For headings
-        sans: ['"Hanken Grotesk Variable"', 'sans-serif'],         // Body text
+        display: ['"Hanken Grotesk Variable"', 'sans-serif'],
+        sans: ['"Hanken Grotesk Variable"', 'sans-serif'],
       },
+
+      // 6. Add transition property for menu (optional but recommended)
+      transitionProperty: {
+        'menu': 'opacity, transform' // Enables smooth transitions for both properties
+      }
     },
   },
-
-  // 5. Essential Plugins
   plugins: [
-    require('@tailwindcss/aspect-ratio'),    // For image containers
-    require('@tailwindcss/typography'),      // For client content areas
-    require('tailwindcss-animate'),          // Smooth hover effects
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
   ],
 }
