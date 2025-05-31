@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      transitionProperty: {
+        'header': 'padding, margin',
+      },
       // 1. Breakpoints (Mobile, Tablet, Desktop)
       screen: {
         'mobile': {'min': '344px', 'max': '882px'}, // Mobile range
@@ -34,40 +37,13 @@ export default {
         'panorama': '16 / 9',
       },
 
-      // 4. Animation (Updated with mobile menu animations)
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'zoom-in': 'zoomIn 0.3s ease-out',
-        'mobile-fade-in': 'mobileMenuFadeIn 0.3s ease-out forwards',
-        'mobile-fade-out': 'mobileMenuFadeOut 0.2s ease-in forwards',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        zoomIn: {
-          '0%': { transform: 'scale(0.95)', opacity: '0.8' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        // Add these new keyframes:
-        mobileMenuFadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(-10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        mobileMenuFadeOut: {
-          '0%': { opacity: '1', transform: 'translateY(0)' },
-          '100%': { opacity: '0', transform: 'translateY(-10px)' },
-        }
-      },
-
-      // 5. Typography
+      // 4. Typography
       fontFamily: {
         display: ['"Hanken Grotesk Variable"', 'sans-serif'],
         sans: ['"Hanken Grotesk Variable"', 'sans-serif'],
       },
 
-      // 6. Add transition property for menu (optional but recommended)
+      // 5. Add transition property for menu (optional but recommended)
       transitionProperty: {
         'menu': 'opacity, transform' // Enables smooth transitions for both properties
       }

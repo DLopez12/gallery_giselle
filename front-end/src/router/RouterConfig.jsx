@@ -31,6 +31,10 @@ const router = createBrowserRouter([
         )
       },
       {
+        path: "/home",
+        element: <HomePage />,
+      },
+      {
         path: "portfolio/:photoId",
         element: (
           <Suspense fallback={<LoadingSpinner />}>

@@ -10,7 +10,7 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="container mx-auto py-12 px-4">
+    <div className="container mx-auto py-12 px-4 pt-20 md:pt-12">
       <h1 className="text-3xl font-display mb-8 p-2">Portfolio</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {photos.map((photo) => (

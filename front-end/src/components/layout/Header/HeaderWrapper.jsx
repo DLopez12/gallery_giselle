@@ -9,7 +9,6 @@ const HeaderWrapper = () => {
   useEffect(() => {
     const checkScreenSize = () => {
       const mobileBreakpoint = window.innerWidth >= 344 && window.innerWidth <= 882;
-      console.log(`[DEBUG] Width: ${window.innerWidth}px | Mobile: ${mobileBreakpoint}`);
       setIsMobile(mobileBreakpoint);
     };
 
@@ -25,9 +24,7 @@ const HeaderWrapper = () => {
   return (
     <>
       {isMobile ? (
-        <div className="bg-red-500 p-2 text-white">
           <MobileHeader />
-        </div>
       ) : (
         <NavBar />
       )}

@@ -11,7 +11,7 @@ export default function Layout() {
       <HeaderWrapper className="sticky top-0 z-50 bg-white shadow-sm" />
       
       {/* Main content area with scroll restoration */}
-      <main className="flex-grow">
+      <main className="flex-grow container mx-auto px-4">
         <AnimatePresence mode="wait">
             <Outlet /> {/* This renders the matched route component */}
         </AnimatePresence>
