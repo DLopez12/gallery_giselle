@@ -12,7 +12,12 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
     },
     "images": {
       "type": "media",
@@ -23,12 +28,6 @@
         "videos",
         "audios"
       ]
-    },
-    "description": {
-      "type": "blocks"
-    },
-    "slug": {
-      "type": "uid"
     }
   }
 }
