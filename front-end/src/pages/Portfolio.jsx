@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'; // State management
 import { Link, useLocation } from 'react-router-dom'; // Routing
-import PortfolioItem from '../components/sections/Portfolio/PortfolioItem'; // UI Component
+import PortfolioItem from '../components/sections/Portfolio/PortfolioItem.jsx'; // UI Component
 import { fetchPortfolio } from '../api/fetchPortfolio'; // Data fetching
 
 export default function Portfolio() {
@@ -14,36 +14,40 @@ export default function Portfolio() {
 
   // Data fetching effect - runs once on component mount
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const portfolioData = await fetchPortfolio();
+  const loadData = async () => {
+    try {
+      console.log('Fetching portfolio data...');
+      const portfolioData = await fetchPortfolio();
+      
+      console.log('API Response:', portfolioData);
+      
+      if (portfolioData.length > 0) {
+        // Transform image URLs to absolute paths
+        const processedData = portfolioData.map(item => ({
+          ...item,
+          images: item.images.map(img => ({
+            ...img,
+            url: img.url.startsWith('http') ? img.url : `${STRAPI_URL}${img.url}`,
+            thumbnail: img.thumbnail && `${STRAPI_URL}${img.thumbnail}`,
+            medium: img.medium && `${STRAPI_URL}${img.medium}`
+          }))
+        }));
         
-        // Only update if we got valid data (not empty array from error)
-        if (portfolioData.length > 0) {
-          setPhotos(portfolioData);
-        } else {
-          setError("No portfolio items found"); // Custom error message
-        }
-      } catch (err) {
-        setError("Failed to load portfolio"); // API error message
-      } finally {
-        setLoading(false); // Always disable loading
+        setPhotos(processedData);
+        console.log('Processed Data:', processedData);
+      } else {
+        setError("No portfolio items found");
       }
-    };
-    
-    loadData();
-  }, []); // Empty dependency array = runs once on mount
+    } catch (err) {
+      console.error('Error:', err);
+      setError("Failed to load portfolio");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Loading state UI
-  if (loading) return (
-    <div className="flex justify-center py-20">
-      {/* Accessibility-friendly spinner */}
-      <div 
-        className="animate-spin h-10 w-10 border-4 border-brand-primary rounded-full border-t-transparent" 
-        aria-label="Loading portfolio..."
-      />
-    </div>
-  );
+  loadData();
+}, []);
 
   // Error state UI
   if (error) return (
