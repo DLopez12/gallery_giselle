@@ -65,7 +65,7 @@ const MobileHeader = () => {
 
     return (
         // Fixed header container
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm mobile-menu-container">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-[#f0e6d2] shadow-sm mobile-menu-container">
             {/* Navigation bar with logo and menu button */}
             <nav className="h-16 flex items-center justify-between px-4">
                 {/* Logo link to homepage */}

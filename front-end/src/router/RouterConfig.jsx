@@ -4,15 +4,19 @@ import Layout from '../components/layout/Layout';
 import NotFound from '../components/common/NotFound';
 import LoadingSpinner from '../components/common/LoadingSpinner'; // Add a spinner component
 
+// Static imports for error cases
+import ErrorBoundary from '../components/ErrorBoundary'; // Error boundary for handling errors gracefully
+
 // Static imports for critical above-the-fold routes
 import HomePage from '../pages/HomePage';
 import Services from '../pages/Services';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import Bookings from '../pages/Bookings';
+import { retryImport } from '../utils/retryImport';
 
 // Modern dynamic imports using React.lazy
-const Portfolio = lazy(() => import('../pages/Portfolio'));
+const Portfolio = lazy(() => retryImport(() => import('../pages/Portfolio.jsx')));
 const PhotoDetail = lazy(() => import('../components/sections/Portfolio/PhotoDetail'));
 
 const router = createBrowserRouter([
@@ -25,9 +29,11 @@ const router = createBrowserRouter([
       { 
         path: "portfolio",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Portfolio />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Portfolio />
+            </Suspense>
+          </ErrorBoundary>
         )
       },
       {

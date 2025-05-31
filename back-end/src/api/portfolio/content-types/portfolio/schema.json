@@ -4,7 +4,7 @@
   "info": {
     "singularName": "portfolio",
     "pluralName": "portfolios",
-    "displayName": "portfolio"
+    "displayName": "Portfolio"
   },
   "options": {
     "draftAndPublish": true

@@ -376,7 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiPortfolioPortfolio extends Struct.CollectionTypeSchema {
   collectionName: 'portfolios';
   info: {
-    displayName: 'portfolio';
+    displayName: 'Portfolio';
     pluralName: 'portfolios';
     singularName: 'portfolio';
   };

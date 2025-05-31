@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run clean:vite && vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean:vite": "rm -rf node_modules/.vite || rmdir /s /q node_modules\\.vite"
   },
   "dependencies": {
     "@fontsource-variable/hanken-grotesk": "^5.2.5",
