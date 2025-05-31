@@ -5,6 +5,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export async function fetchPortfolio() {
   try {
+    
+    console.log('Fetching from URL:', `<span class="math-inline">\{API\_URL\}</span>{API_ROUTES.portfolio}?populate=images`)
+
     const res = await fetch(`${API_URL}${API_ROUTES.portfolio}?populate=images`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -13,20 +16,20 @@ export async function fetchPortfolio() {
     return data.map(item => ({
       id: item.id,
       title: item.attributes?.title || 'Untitled',
-      // === FIX IS HERE ===
-      // Access `item.attributes.images` directly, it's already an array
-      images: item.attributes?.images?.map(img => ({
-        id: img.id,
-        // Ensure you prepend the API_URL if the image URL from Strapi is relative
-        url: `${API_URL}${img.url}`, // Access img.url directly
-        alt: img.alternativeText || item.attributes.title, // Access img.alternativeText directly
-        // Include all available formats, prepending API_URL
-        // The formats object is directly on `img`, not `img.attributes`
-        thumbnail: img.formats?.thumbnail?.url ? `${API_URL}${img.formats.thumbnail.url}` : undefined,
-        small: img.formats?.small?.url ? `${API_URL}${img.formats.small.url}` : undefined,
-        medium: img.formats?.medium?.url ? `${API_URL}${img.formats.medium.url}` : undefined,
-        large: img.formats?.large?.url ? `${API_URL}${img.formats.large.url}` : undefined
-      })) || [] // Fallback empty array
+      slug: item.attributes?.slug || `untitled-${item.id}`, // Ensure slug exists for Link
+      images: item.attributes?.images?.data?.map(imgData => ({ // Access imgData.attributes for actual image details
+        id: imgData.id,
+        // Make sure to access attributes for URL and other image properties in Strapi V4
+        url: `${API_URL}${imgData.attributes.url}`,
+        alternativeText: imgData.attributes.alternativeText || item.attributes.title,
+        name: imgData.attributes.name || '',
+        formats: imgData.attributes.formats ? {
+          thumbnail: imgData.attributes.formats.thumbnail?.url ? `${API_URL}${imgData.attributes.formats.thumbnail.url}` : undefined,
+          small: imgData.attributes.formats.small?.url ? `${API_URL}${imgData.attributes.formats.small.url}` : undefined,
+          medium: imgData.attributes.formats.medium?.url ? `${API_URL}${imgData.attributes.formats.medium.url}` : undefined,
+          large: imgData.attributes.formats.large?.url ? `${API_URL}${imgData.attributes.formats.large.url}` : undefined
+        } : {}
+      })) || []
     }));
   } catch (error) {
     console.error('Fetch error:', error);
