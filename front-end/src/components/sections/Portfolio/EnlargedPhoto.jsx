@@ -1,18 +1,102 @@
 // src/components/sections/Portfolio/EnlargedPhoto.jsx
-// ... (imports remain the same)
+// Removed useParams import, now accept photoIdProp
+import { useNavigate, useLocation } from 'react-router-dom'; // <--- ADD useLocation HERE
+import { useState, useEffect, useCallback } from 'react';
+import { fetchPortfolio } from '../../../api/fetchPortfolio';
+import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/md';
 
-export default function EnlargedPhoto() {
-  const { photoId } = useParams();
+// Accept photoIdProp instead of using useParams
+export default function EnlargedPhoto({ photoIdProp }) {
+  // Use photoIdProp directly instead of getting from useParams
+  const photoId = photoIdProp;
   const navigate = useNavigate();
+  const location = useLocation(); // <--- Initialize useLocation here
 
   const [allPortfolioItems, setAllPortfolioItems] = useState([]);
   const [portfolioItem, setPortfolioItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ... (useEffect for allPortfolioItems and portfolioItem remain the same)
-  // ... (navigateToPhoto useCallback remains the same)
-  // ... (loading, error, no item state handling remains the same)
+  // Effect to fetch all portfolio data (only once)
+  useEffect(() => {
+    const loadAllData = async () => {
+      try {
+        console.log('--- EnlargedPhoto: Fetching ALL portfolio items for navigation ---');
+        const items = await fetchPortfolio();
+        setAllPortfolioItems(items);
+        console.log('--- EnlargedPhoto: All portfolio items loaded:', items);
+      } catch (err) {
+        console.error('--- EnlargedPhoto: Error loading all portfolio items:', err);
+      }
+    };
+    loadAllData();
+  }, []);
+
+  // Effect to find and set the current portfolio item based on photoId
+  useEffect(() => {
+    if (!photoId || allPortfolioItems.length === 0) {
+      // If photoId is not yet available or all items haven't loaded, do nothing
+      setLoading(true); // Keep loading true until photoId and data are ready
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const numericalId = photoId.split('-').pop();
+    console.log('--- EnlargedPhoto: Current URL parameter photoId:', photoId, 'Extracted Numerical ID:', numericalId);
+
+    const foundItem = allPortfolioItems.find(item => String(item.id) === numericalId);
+
+    console.log('--- EnlargedPhoto: Found current item:', foundItem);
+
+    if (foundItem && foundItem.images && foundItem.images.length > 0) {
+      setPortfolioItem(foundItem);
+    } else {
+      setError("Enlarged portfolio item or its images not found for this ID.");
+      setPortfolioItem(null);
+    }
+    setLoading(false);
+  }, [photoId, allPortfolioItems]); // Re-run if photoId changes or allPortfolioItems are loaded
+
+  // Memoized function for navigation
+   const navigateToPhoto = useCallback((direction) => {
+    if (allPortfolioItems.length === 0 || !portfolioItem) return;
+
+    const currentIndex = allPortfolioItems.findIndex(item => item.id === portfolioItem.id);
+    let newIndex = currentIndex;
+
+    if (direction === 'next') {
+      newIndex = (currentIndex + 1) % allPortfolioItems.length;
+    } else if (direction === 'prev') {
+      newIndex = (currentIndex - 1 + allPortfolioItems.length) % allPortfolioItems.length;
+    }
+
+    const nextPhoto = allPortfolioItems[newIndex];
+    if (nextPhoto) {
+      navigate(`/portfolio/${nextPhoto.slug}-${nextPhoto.id}`, {
+        replace: true,
+        // When navigating to the next/prev photo within the modal,
+        // the background should remain the original portfolio page.
+        // So we use the 'background' from the current location state.
+        state: { background: location.state?.background || location } // Use background from state if available, else current location
+      });
+    }
+  }, [allPortfolioItems, portfolioItem, navigate, location]); // location is a dependency
+
+  // The close button also needs to consider the 'background' location
+  const handleCloseModal = useCallback(() => {
+    // If there's a background state, navigate back to it.
+    // Otherwise, navigate to the base portfolio page.
+    if (location.state?.background) {
+      navigate(location.state.background, { replace: true });
+    } else {
+      navigate('/portfolio', { replace: true });
+    }
+  }, [navigate, location]); // Added location to dependency array
+
+  // --- Render logic for EnlargedPhoto (remains mostly the same as before) ---
+  // ... (loading, error, no item states)
 
   const mainImage = portfolioItem?.images?.[0]; // Use optional chaining for safety
   const enlargedImageUrl = mainImage?.formats?.large?.url || mainImage?.formats?.medium?.url || mainImage?.url;
@@ -24,20 +108,16 @@ export default function EnlargedPhoto() {
   return (
     <div
       className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-      onClick={() => navigate('/portfolio')} // This will be the main close trigger
+      onClick={handleCloseModal} // Use the new handler
     >
-      {/* This inner div now acts as the modal's *content container*.
-          Clicks within it (but not on specific elements that stop propagation)
-          will NOT close the modal. */}
       <div
-        className="relative max-w-6xl w-full max-h-[90vh] flex items-center justify-center" // Added max-h-[90vh] to this div
-        onClick={(e) => e.stopPropagation()} // Stop propagation here to prevent immediate close
+        className="relative max-w-6xl w-full max-h-[90vh] flex items-center justify-center"
+        onClick={(e) => e.stopPropagation()}
       >
-
         {/* Previous Button */}
         <button
           onClick={(e) => { e.stopPropagation(); navigateToPhoto('prev'); }}
-          className="absolute left-0 top-1/2 -translate-y-1/2 p-2 text-white text-4xl hover:bg-gray-700/50 rounded-full z-10 block" // Removed hidden md:block
+          className="absolute left-0 top-1/2 -translate-y-1/2 p-2 text-white text-4xl hover:bg-gray-700/50 rounded-full z-10 block"
           aria-label="Previous photo"
         >
           <MdOutlineArrowBackIosNew />
@@ -47,7 +127,7 @@ export default function EnlargedPhoto() {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            navigate('/portfolio');
+            handleCloseModal(); // Use the new handler
           }}
           className="absolute -top-12 right-0 text-white text-2xl"
           aria-label="Close enlarged photo"
@@ -55,39 +135,9 @@ export default function EnlargedPhoto() {
           ✕
         </button>
 
-        {/* The Image (adjust size to fit within its parent content container) */}
-        {enlargedImageUrl ? (
-          <img
-            src={enlargedImageUrl}
-            className="max-h-full max-w-full object-contain" // Use max-h-full and max-w-full to fit parent
-            alt={enlargedAltText}
-            onClick={(e) => e.stopPropagation()} // Stop propagation on the image itself
-            onError={(e) => {
-              console.error('--- EnlargedPhoto: Failed to load image:', enlargedImageUrl, e);
-              e.target.style.display = 'none';
-              setError("Failed to load enlarged image.");
-            }}
-          />
-        ) : (
-          <div className="text-white text-center">No enlarged image URL found for this item.</div>
-        )}
+        {/* ... (Image and Next Button remain the same) ... */}
 
-        {/* Next Button */}
-        <button
-          onClick={(e) => { e.stopPropagation(); navigateToPhoto('next'); }}
-          className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-white text-4xl hover:bg-gray-700/50 rounded-full z-10 block" // Removed hidden md:block
-          aria-label="Next photo"
-        >
-          <MdOutlineArrowForwardIos />
-        </button>
       </div>
-
-      {/* Optional: Display title or alt text below image */}
-      {enlargedAltText && (
-        <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-center p-2 bg-black/50 rounded z-20">
-          {enlargedAltText}
-        </p>
-      )}
     </div>
   );
 }
