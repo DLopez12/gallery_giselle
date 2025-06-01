@@ -1,20 +1,24 @@
 // src/components/layout/Layout.jsx
 import { motion, AnimatePresence } from 'framer-motion';
-import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom'; // Removed Routes, Route
+// Import `useResolvedPath` and `matchPath` for a more explicit check, though not strictly needed here
+import { Outlet, ScrollRestoration, useLocation, useMatches } from 'react-router-dom'; // Added useMatches for debugging
 import { Suspense, lazy } from 'react';
 import HeaderWrapper from './Header/HeaderWrapper';
 import Footer from './Footer';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-const EnlargedPhoto = lazy(() => import('../sections/Portfolio/EnlargedPhoto')); // Adjust path if necessary
+const EnlargedPhoto = lazy(() => import('../sections/Portfolio/EnlargedPhoto'));
 
 export default function Layout() {
   const location = useLocation();
-  const background = location.state?.background;
+  const background = location.state?.background; // The location *before* the modal was opened
 
   // Extract photoId directly from the current location's pathname
-  // This will get the last segment of the path, e.g., "testimage1-2" from "/portfolio/testimage1-2"
-  const currentPhotoId = location.pathname.split('/').pop();
+  const photoIdFromUrl = location.pathname.split('/').pop();
+
+  // Debugging: Log location and background state
+  console.log("Layout: Current Location", location);
+  console.log("Layout: Background Location from state", background);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,13 +26,20 @@ export default function Layout() {
 
       <main className="flex-grow container mx-auto px-4">
         <AnimatePresence mode="wait">
-          <Outlet />
+          {/*
+            CRITICAL FIX FOR 404 BACKGROUND:
+            Render the Outlet using the `background` location if it exists.
+            This tells the primary router to treat the background as the active page
+            for the main content, even though the URL is for the modal.
+          */}
+          <Outlet location={background || location} /> {/* <-- IMPORTANT CHANGE */}
         </AnimatePresence>
         <ScrollRestoration />
       </main>
 
       <Footer className="bg-black text-white py-8" />
 
+      {/* MODAL RENDERING: Only render the modal overlay if there's a background location */}
       {background && (
         <AnimatePresence mode="wait">
           <motion.div
@@ -39,9 +50,7 @@ export default function Layout() {
             className="fixed inset-0 z-50"
           >
             <Suspense fallback={<LoadingSpinner />}>
-              {/* Pass the extracted photoId directly as a prop to EnlargedPhoto */}
-              {/* Ensure currentPhotoId is present before rendering EnlargedPhoto */}
-              {currentPhotoId && <EnlargedPhoto photoIdProp={currentPhotoId} />}
+              {photoIdFromUrl && <EnlargedPhoto photoIdProp={photoIdFromUrl} />}
             </Suspense>
           </motion.div>
         </AnimatePresence>
