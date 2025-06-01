@@ -27,22 +27,19 @@ export async function fetchPortfolio() {
     }
 
     return data.map(item => ({
-      id: item.id,
-      title: item.attributes?.title || 'Untitled',
-      slug: item.attributes?.slug || `untitled-${item.id}`,
-      // ********* CRITICAL CHANGE HERE *********
-      // The 'images' array is directly under 'item.attributes' and its elements
-      // are the image objects themselves, not nested in 'data.attributes'.
-      images: item.attributes?.images?.map(img => ({ // Removed `.data` and `.attributes` from `img`
-        id: img.id,
-        url: `${API_URL}${img.url}`, // Access url directly from img
-        alternativeText: img.alternativeText || img.name || item.attributes.title, // Access directly
-        name: img.name || '', // Access directly
-        formats: img.formats ? { // Access formats directly
-          thumbnail: img.formats.thumbnail?.url ? `${API_URL}${img.formats.thumbnail.url}` : undefined,
-          small: img.formats.small?.url ? `${API_URL}${img.formats.small.url}` : undefined,
-          medium: img.formats.medium?.url ? `${API_URL}${img.formats.medium.url}` : undefined,
-          large: img.formats.large?.url ? `${API_URL}${img.formats.large.url}` : undefined
+       id: item.id,
+       title: item.title || 'Untitled', // Access title directly
+       slug: item.slug || `untitled-${item.id}`, // Access slug directly
+       images: item.images?.map(img => ({ // Access images directly from item
+          id: img.id,
+          url: `${API_URL}${img.url}`,
+          alternativeText: img.alternativeText || img.name || item.title, // Access title directly for fallback
+          name: img.name || '',
+          formats: img.formats ? {
+            thumbnail: img.formats.thumbnail?.url ? `${API_URL}${img.formats.thumbnail.url}` : undefined,
+            small: img.formats.small?.url ? `${API_URL}${img.formats.small.url}` : undefined,
+            medium: img.formats.medium?.url ? `${API_URL}${img.formats.medium.url}` : undefined,
+            large: img.formats.large?.url ? `${API_URL}${img.formats.large.url}` : undefined
         } : {}
       })) || []
     }));
