@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom'; // Routing
 import PortfolioItem from '../components/sections/Portfolio/PortfolioItem.jsx'; // UI Component
 import { fetchPortfolio } from '../api/fetchPortfolio'; // Data fetching
 
-// Remove: const STRAPI_URL = import.meta.env.VITE_API_URL; // This is not needed here as fetchPortfolio handles it
 
 export default function Portfolio() {
   // State management
@@ -18,21 +17,22 @@ export default function Portfolio() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log('Fetching portfolio data...');
-        // fetchPortfolio already returns data with absolute image URLs
-        const portfolioData = await fetchPortfolio();
+        console.log('--- Portfolio.jsx: Starting data fetch ---');
+        const portfolioData = await fetchPortfolio(); // This calls your fetchPortfolio.js
 
-        console.log('API Response (after fetchPortfolio):', portfolioData);
+        // !!! CRITICAL LOGGING POINT A !!!
+        console.log('--- Portfolio.jsx: Raw data returned by fetchPortfolio: ---', portfolioData);
 
         if (portfolioData.length > 0) {
-          // No need for URL transformation here, fetchPortfolio already did it.
-          setPhotos(portfolioData); // Directly set the data
-          console.log('Processed Data (same as API Response from fetchPortfolio):', portfolioData);
+          // !!! CRITICAL LOGGING POINT B !!!
+          console.log('--- Portfolio.jsx: Setting photos state with data: ---', portfolioData);
+          setPhotos(portfolioData);
         } else {
           setError("No portfolio items found");
+          console.warn("--- Portfolio.jsx: No portfolio items found after fetch ---");
         }
       } catch (err) {
-        console.error('Error:', err);
+        console.error('--- Portfolio.jsx: Error during loadData ---', err);
         setError("Failed to load portfolio");
       } finally {
         setLoading(false);

@@ -3,10 +3,19 @@
 // 'photo' prop is now an image object from the Strapi response (e.g., { id, url, alt, thumbnail, medium, large })
 // 'title' prop is the portfolio item's title, passed for the overlay text
 const PortfolioItem = ({ photo, title }) => {
-  // Use medium format URL if available, otherwise fallback to original URL
+  
+  // Debugging console logs to trace the props and computed values
+  // --- ADD THESE CONSOLE.LOGS ---
+  console.log('--- PortfolioItem Render Debug ---');
+  console.log('Received photo prop:', photo);
+  console.log('Received title prop:', title);
+
   const imageUrl = photo.medium?.url || photo.url;
-  // Use the image's specific alt text if available, otherwise fallback to the portfolio item's title
+  console.log('Calculated imageUrl:', imageUrl);
+
   const altText = photo.alternativeText || photo.name || title;
+  console.log('Calculated altText:', altText);
+  // --- END OF CONSOLE.LOGS ---
 
   if (!imageUrl) {
     console.warn('Missing image URL for photo ID:', photo.id || 'unknown');
