@@ -17,7 +17,7 @@ import { retryImport } from '../utils/retryImport';
 
 // Modern dynamic imports using React.lazy
 const Portfolio = lazy(() => retryImport(() => import('../pages/Portfolio.jsx')));
-const PhotoDetail = lazy(() => import('../components/sections/Portfolio/PhotoDetail'));
+const EnlargedPhoto = lazy(() => import('../components/sections/Portfolio/EnlargedPhoto'));
 
 const router = createBrowserRouter([
   {
@@ -44,17 +44,9 @@ const router = createBrowserRouter([
         path: "portfolio/:photoId",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <PhotoDetail />
+            <EnlargedPhoto />
           </Suspense>
         ),
-        loader: async ({ params }) => {
-          return {
-            id: params.photoId,
-            title: "Sample Photo",
-            description: "Beautiful photography work",
-            imageUrl: `/placeholder-${params.photoId}.jpg`
-          };
-        }
       },
       { path: "services", element: <Services /> },
       { path: "about", element: <About /> },
