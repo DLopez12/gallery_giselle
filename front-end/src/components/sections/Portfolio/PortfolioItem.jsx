@@ -19,26 +19,25 @@ const PortfolioItem = ({ photo, title }) => {
 
   // --- CRITICAL CLS FIX: Get the width and height of the SPECIFIC format chosen for imageUrl ---
   let imageWidth, imageHeight;
-  let selectedFormat = null;
-
-  if (photo?.formats?.thumbnail?.url && imageUrl === photo.formats.thumbnail.url) {
+  if (imageUrl === photo?.formats?.thumbnail?.url) {
       imageWidth = photo.formats.thumbnail.width;
       imageHeight = photo.formats.thumbnail.height;
-  } else if (photo?.formats?.small?.url && imageUrl === photo.formats.small.url) {
+  } else if (imageUrl === photo?.formats?.small?.url) {
       imageWidth = photo.formats.small.width;
       imageHeight = photo.formats.small.height;
-  } else if (photo?.formats?.medium?.url && imageUrl === photo.formats.medium.url) {
+  } else if (imageUrl === photo?.formats?.medium?.url) {
       imageWidth = photo.formats.medium.width;
       imageHeight = photo.formats.medium.height;
   } else {
       // Fallback to original dimensions if no specific format URL was used, or dimensions are missing
-      imageWidth = photo?.width;
-      imageHeight = photo?.height;
+      // Provide a reasonable default for safety, but try to get actual dimensions from Strapi
+      imageWidth = photo?.width || 232; // Default width
+      imageHeight = photo?.height || 154; // Default height
   }
 
   // Fallback to defaults if dimensions are still not found (shouldn't happen with correct Strapi config)
-  imageWidth = imageWidth = selectedFormat?.width || photo?.width || 232;
-  imageHeight = imageHeight = selectedFormat?.height || photo?.height || 154;
+  // imageWidth = imageWidth = selectedFormat?.width || photo?.width || 232;
+  // imageHeight = imageHeight = selectedFormat?.height || photo?.height || 154;
 
   console.log('Calculated imageWidth:', imageWidth);
   console.log('Calculated imageHeight:', imageHeight);
@@ -68,9 +67,9 @@ const PortfolioItem = ({ photo, title }) => {
       <img
         src={imageUrl}
         alt={altText}
-        width={imageWidth}   // <--- USE THE JAVASCRIPT VARIABLES HERE
-        height={imageHeight} // <--- USE THE JAVASCRIPT VARIABLES HERE
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        width={imageWidth} // Set width for better CLS handling
+        height={imageHeight} // Set height for better CLS handling
+        className="object-cover transition-transform duration-300 group-hover:scale-105" // h-full w-full 
         onError={(e) => {
           console.error('Failed to load image:', imageUrl);
           e.target.style.display = 'none'; // Hide the broken image icon

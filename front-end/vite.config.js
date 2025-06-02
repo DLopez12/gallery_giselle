@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
   server: {
@@ -9,15 +10,6 @@ export default defineConfig({
         target: 'http://localhost:1337/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/avc/, ''),
-      }
-    }
-  },
-  build: {
-    rollupOptoins: {
-      output: {
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        chuckFileNames: 'chunks/[name].[hash].js',
-        entryFileNames: 'entries/[name].[hash].js'
       }
     }
   },
@@ -56,6 +48,13 @@ export default defineConfig({
   ],
   build: {
     outDir: 'dist',
-  },
-  assetsInclude: ['**/*.heic', '**/*.arw',],
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        chuckFileNames: 'chunks/[name].[hash].js',
+        entryFileNames: 'entries/[name].[hash].js'
+      },
+    },
+    assetsInclude: ['**/*.heic', '**/*.arw',],
+  }
 });

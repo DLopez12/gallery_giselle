@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'; // Assuming you have fr
 const SkeletonItem = () => (
   <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-300 animate-pulse">
     {/* These inline styles provide the placeholder with dimensions to prevent CLS */}
-    <div className="w-full h-full aspect-square flex items-center justify-center text-gray-500">
+    <div className="w-full h-full flex items-center justify-center text-gray-500">
       {/* Optional: Add a simple loading icon or text */}
     </div>
   </div>
