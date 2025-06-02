@@ -1,16 +1,13 @@
 /* In your font.css file or wherever the font is defined */
-@import '@fontsource-variable/hanken-grotesk';
-
-@font-face {
-  font-family: 'Hanken Grotesk Variable'; /* Or whatever your specific font-family name is */
-  src: url('@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wgt-normal.woff2') format('woff2'); /* Ensure this URL matches your CSS */
-  font-weight: normal; /* Or specific weights */
+.hanken-grotesk-regular {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
   font-style: normal;
-  font-display: swap; /* <--- MAKE SURE THIS IS HERE */
 }
 
 :root {
-     --font-hanken: 'Hanken Grotesk Variable', sans-serif;
+     --font-hanken: 'Hanken Grotesk', sans-serif;
 }
 
 nav {

@@ -69,7 +69,7 @@ const PortfolioItem = ({ photo, title }) => {
         alt={altText}
         width={imageWidth} // Set width for better CLS handling
         height={imageHeight} // Set height for better CLS handling
-        className="object-cover transition-transform duration-300 group-hover:scale-105" // h-full w-full 
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 " 
         onError={(e) => {
           console.error('Failed to load image:', imageUrl);
           e.target.style.display = 'none'; // Hide the broken image icon
