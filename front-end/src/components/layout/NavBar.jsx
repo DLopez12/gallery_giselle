@@ -17,7 +17,7 @@ const NavBar = () => {
         // z-50: ensures proper stacking context
         // p-4: sufficient touch target padding
         <nav 
-            className="fixed bg-[#f0e6d2] top-0 w-full z-50 p-4 "
+            className="fixed bg-[#f0e6d2] h-[88px] top-0 w-full z-50 p-4 "
             aria-label="Main navigation"
         > 
             {/*

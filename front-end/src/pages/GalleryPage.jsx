@@ -121,7 +121,7 @@ export default function GalleryPage() {
     }
 
     return (
-        <div className="container mx-auto py-12 px-4 text-center">
+        <div className="container mx-auto py-8 px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-display mb-6 p-2 text-brand-dark">
                 {galleryInfo.title}
             </h1>

@@ -1,8 +1,8 @@
 const Contact = () => {
     return (
-      <div>
-        <h1>Contact</h1>
-      </div>
+      <>
+      <div className="container mx-auto px-4 py-8 pt-[88px]">...</div>
+      </>
       );
 }
 

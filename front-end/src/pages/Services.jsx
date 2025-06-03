@@ -1,8 +1,8 @@
 const Services = () => {
     return (
-      <div>
-        <h1>Services</h1>
-      </div>
+      <>
+      <div className="container mx-auto px-4 py-8 pt-[88px]">...</div>
+      </>
       );
 }
 

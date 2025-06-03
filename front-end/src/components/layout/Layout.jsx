@@ -24,7 +24,7 @@ export default function Layout() {
     <div className="min-h-screen flex flex-col">
       <HeaderWrapper className="sticky top-0 z-50 bg-white shadow-sm" />
 
-      <main className="flex-grow container mx-auto px-4 pt-[90px] min-h-[600px]">
+      <main className="flex-grow min-h-[600px]">
         <AnimatePresence>
           {/*
             CRITICAL FIX FOR 404 BACKGROUND:
