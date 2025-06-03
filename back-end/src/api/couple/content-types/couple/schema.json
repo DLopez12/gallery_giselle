@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "couples",
+  "info": {
+    "singularName": "couple",
+    "pluralName": "couples",
+    "displayName": "Couple"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "photos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::photo.photo"
+    }
+  }
+}

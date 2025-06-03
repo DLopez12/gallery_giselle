@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "graduates",
+  "info": {
+    "singularName": "graduate",
+    "pluralName": "graduates",
+    "displayName": "Graduate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "photos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::photo.photo"
+    }
+  }
+}
