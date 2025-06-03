@@ -1,8 +1,8 @@
 // pages/Portfolio.jsx
 import { useState, useEffect, lazy, Suspense, useCallback } from 'react'; // Add lazy and Suspense
-import { Link, useLocation } from 'react-router-dom'; // Keep Link if you need it elsewhere, but it's commented out for the modal
+import { Link, useLocation, useParams } from 'react-router-dom'; // Keep Link if you need it elsewhere, but it's commented out for the modal
 import PortfolioItem from '../components/sections/Portfolio/PortfolioItem.jsx';
-import { fetchPortfolio } from '../api/fetchPortfolio';
+import { fetchPortfolio } from '../api/fetchPortfolio.js';
 import { AnimatePresence, motion } from 'framer-motion'; // Assuming you have framer-motion installed for motion.div and AnimatePresence
 
 // Define a SkeletonItem component for placeholders
@@ -19,22 +19,28 @@ const SkeletonItem = () => (
 // Corrected typo: "Englarged" -> "Enlarged"
 const LazyEnlargedPhoto = lazy(() => import('../components/sections/Portfolio/EnlargedPhoto.jsx')); // Corrected path/component name
 
-export default function Portfolio() {
+export default function PortfolioCategory() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true); // Initial state should be true
   const [error, setError] = useState(null);
   const location = useLocation(); // Not strictly needed for modal, but might be for other routing context
 
+  const { categorySlug } = useParams();
+
   // State to control the modal's visibility and pass data to it
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null); // to pass the photo data to the modal
-
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true); // Ensure loading is true at the start of fetch
         console.log('--- Portfolio.jsx: Starting data fetch ---');
         const portfolioData = await fetchPortfolio();
+        
+        // Filter the portfolio data based on the categorySlug
+        const filteredData = portfolioData.filter(item => item.category === categorySlug); // Assuming your Strapi data has a 'category' field matching your slugs
+        setPhotos(filteredData);
 
         console.log('--- Portfolio.jsx: Raw data returned by fetchPortfolio: ---', portfolioData);
 
@@ -54,7 +60,7 @@ export default function Portfolio() {
     };
 
     loadData();
-  }, []);
+  }, [categorySlug]);
 
   // Handler to open the modal
   const handleOpenModal = (photoData, itemTitle) => { // Renamed param to photoData for clarity

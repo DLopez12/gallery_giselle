@@ -13,8 +13,10 @@ import Contact from '../pages/Contact';
 import Bookings from '../pages/Bookings';
 import { retryImport } from '../utils/retryImport';
 
-const Portfolio = lazy(() => retryImport(() => import('../pages/Portfolio.jsx')));
-// const EnlargedPhoto = lazy(() => import('../components/sections/Portfolio/EnlargedPhoto')); // <-- REMOVE THIS LINE HERE
+
+// Import portfolio components
+const PortfolioLanding = lazy(() => retryImport(() => import('../pages/PortfolioLanding.jsx')));
+const PortfolioCategory = lazy(() => retryImport(() => import('../pages/PortfolioCategory.jsx')));
 
 const router = createBrowserRouter([
   {
@@ -24,14 +26,46 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: "portfolio",
+        path: "portfolio", // This is the landing page for portfolio
         element: (
           <ErrorBoundary>
             <Suspense fallback={<LoadingSpinner />}>
-              <Portfolio />
+              <PortfolioLanding />
             </Suspense>
           </ErrorBoundary>
-        )
+        ),
+        children: [
+          {
+            path: "weddings-elopments", // Corrected slug for Weddings & Elopements
+            element: (
+              <ErrorBoundary>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PortfolioCategory /> {/* This will render the Weddings & Elopements category */}
+                </Suspense>
+              </ErrorBoundary>
+            )
+          },
+          {
+            path: "couples", // e.g., /portfolio/couples
+            element: (
+              <ErrorBoundary>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PortfolioCategory /> {/* This will render the Couples category */}
+                </Suspense>
+              </ErrorBoundary>
+            )
+          },
+          {
+            path: "college-graduates", // e.g., /portfolio/college-graduates
+            element: (
+              <ErrorBoundary>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PortfolioCategory /> {/* This will render the College Graduates category */}
+                </Suspense>
+              </ErrorBoundary>
+            )
+          },
+        ]
       },
       { path: "/home", element: <HomePage /> }, // Keep if you want /home specifically
       { path: "services", element: <Services /> },
@@ -42,14 +76,10 @@ const router = createBrowserRouter([
       { path: "*", element: <NotFound /> },
     ],
   },
-  // If EnlargedPhoto is a modal, it should NOT be a direct child of the main router's children array like this.
-  // It will be rendered conditionally in the Layout or App.
 ]);
 
 export default function RouterConfig() {
   return (
-    // <Suspense fallback={<LoadingSpinner />}> // Suspense goes inside routes or components
       <RouterProvider router={router} />
-    // </Suspense>
   );
 }
