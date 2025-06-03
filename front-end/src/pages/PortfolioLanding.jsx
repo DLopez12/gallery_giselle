@@ -29,7 +29,7 @@ const categories = [
 export default function PortfolioLanding() {
   return (
     <div className="container mx-auto py-12 px-4 pt-[90px] text-center">
-      <h1 className="text-4xl md:text-5xl font-display mb-6 p-2 pt-[88px] text-brand-dark">
+      <h1 className="text-4xl md:text-5xl font-display mb-6 p-2 text-brand-dark">
         Portfolio
       </h1>
 

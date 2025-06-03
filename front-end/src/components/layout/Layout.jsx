@@ -1,8 +1,7 @@
 // src/components/layout/Layout.jsx
 import { motion, AnimatePresence } from 'framer-motion';
-// Import `useResolvedPath` and `matchPath` for a more explicit check, though not strictly needed here
-import { Outlet, ScrollRestoration, useLocation, useMatches } from 'react-router-dom'; // Added useMatches for debugging
-import { Suspense, lazy } from 'react';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
+import { Suspense, lazy, useState, useEffect } from 'react'; // Added useState, useEffect
 import HeaderWrapper from './Header/HeaderWrapper';
 import Footer from './Footer';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -11,35 +10,65 @@ const EnlargedPhoto = lazy(() => import('../sections/Portfolio/EnlargedPhoto'));
 
 export default function Layout() {
   const location = useLocation();
-  const background = location.state?.background; // The location *before* the modal was opened
+  const background = location.state?.background;
 
-  // Extract photoId directly from the current location's pathname
-  const photoIdFromUrl = location.pathname.split('/').pop();
+  // State to determine if the current viewport is within the mobile range defined for the header
+  const [isMobileLayout, setIsMobileLayout] = useState(false);
 
-  // Debugging: Log location and background state
-  console.log("Layout: Current Location", location);
-  console.log("Layout: Background Location from state", background);
+  // Effect to check screen size and update isMobileLayout state
+  useEffect(() => {
+    const checkScreenSize = () => {
+      // IMPORTANT: These breakpoints MUST match the logic in HeaderWrapper.jsx
+      // and MobileHeader.jsx to ensure consistent header height and main padding.
+      setIsMobileLayout(window.innerWidth >= 344 && window.innerWidth <= 882);
+    };
+
+    // Initial check on component mount
+    checkScreenSize();
+    // Add event listener for window resize to update state dynamically
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup: remove event listener when component unmounts
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+
+  // Dynamically determine the padding-top for the <main> element
+  // This pushes the content down below the fixed header, preventing overlap.
+  // The value matches the height of the active header (64px for mobile, 88px for desktop).
+  const mainPaddingTopClass = isMobileLayout ? "pt-[64px]" : "pt-[88px]";
+
+  // Base classes for the <main> element:
+  // flex-grow: Makes <main> take up all available vertical space between header and footer.
+  // min-h-0: Crucial for flex containers. Ensures that children with h-full can correctly
+  //          calculate their 100% height based on the available space.
+  // dynamic pt class: Applies the correct top padding.
+  let mainClassName = `flex-grow min-h-0 ${mainPaddingTopClass}`;
 
   return (
+    // Outer div for the entire layout.
+    // min-h-screen: Ensures it takes at least the full viewport height.
+    // flex flex-col: Sets up a flex container that stacks children vertically,
+    //                allowing flex-grow on <main> to work for sticky footer.
     <div className="min-h-screen flex flex-col">
-      <HeaderWrapper className="sticky top-0 z-50 bg-white shadow-sm" />
+      {/* Header component. HeaderWrapper now contains a placeholder div
+          that occupies space in the normal document flow, matching the fixed header's height. */}
+      <HeaderWrapper />
 
-      <main className="flex-grow min-h-[600px]">
+      {/* Main content area */}
+      <main className={mainClassName}>
+        {/* AnimatePresence for smooth route transitions (if using Framer Motion for pages) */}
         <AnimatePresence>
-          {/*
-            CRITICAL FIX FOR 404 BACKGROUND:
-            Render the Outlet using the `background` location if it exists.
-            This tells the primary router to treat the background as the active page
-            for the main content, even though the URL is for the modal.
-          */}
-          <Outlet location={background || location} /> {/* <-- IMPORTANT CHANGE */}
+          <Outlet location={background || location} />
         </AnimatePresence>
+        {/* ScrollRestoration helps maintain scroll position across routes */}
         <ScrollRestoration />
       </main>
 
+      {/* Footer component */}
       <Footer className="bg-black text-white py-8" />
 
-      {/* MODAL RENDERING: Only render the modal overlay if there's a background location */}
+      {/* MODAL RENDERING: (Keep your modal logic as is) */}
+      {/* Renders the EnlargedPhoto modal when background state is present in location */}
       {background && (
         <AnimatePresence mode="wait">
           <motion.div
@@ -50,27 +79,11 @@ export default function Layout() {
             className="fixed inset-0 z-50"
           >
             <Suspense fallback={<LoadingSpinner />}>
-              {photoIdFromUrl && <EnlargedPhoto photoIdProp={photoIdFromUrl} />}
+              {location.pathname.split('/').pop() && <EnlargedPhoto photoIdProp={location.pathname.split('/').pop()} />}
             </Suspense>
           </motion.div>
         </AnimatePresence>
       )}
-    </div>
-  );
-}
-
-// Optional error boundary (for custom error handling)
-import { useRouteError } from 'react-router-dom'; // Import useRouteError
-export function LayoutErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return (
-    <div className="min-h-screen flex flex-col">
-      <HeaderWrapper />
-      <main className="flex-grow grid place-items-center">
-        <h2 className="text-2xl">Oops! Something went wrong.</h2>
-      </main>
-      <Footer />
     </div>
   );
 }

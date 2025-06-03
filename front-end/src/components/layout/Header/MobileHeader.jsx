@@ -1,77 +1,71 @@
-// React core imports
-import { useState, useEffect } from 'react'; // State and lifecycle management
-import { NavLink } from 'react-router-dom'; // Navigation with active state tracking
-
-// Component libraries
-import { FiMenu, FiX } from 'react-icons/fi'; // Menu icons from Feather Icons
-import { motion, AnimatePresence } from 'framer-motion'; // Animation library
+// src/components/layout/Header/MobileHeader.jsx
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MobileHeader = () => {
-    // State management for menu toggle and responsive detection
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Controls mobile menu visibility
-    const [isMobile, setIsMobile] = useState(false); // Tracks if in mobile viewport range
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false); // This component explicitly renders only if isMobile is true
 
-    // CSS classes for navigation links
-    const activeStyle = "text-brand-primary font-semibold"; // Active link styling
-    const baseStyle = "text-lg font-medium text-gray-800 hover:text-brand-primary transition-colors duration-200"; // Base link styling
+    const activeStyle = "text-brand-primary font-semibold";
+    const baseStyle = "text-lg font-medium text-gray-800 hover:text-brand-primary transition-colors duration-200";
 
-    // Animation variants for menu items (stagger effect)
     const itemVariants = {
-        hidden: { opacity: 0, y: -10 }, // Initial hidden state
-        visible: (i) => ({ // Animated visible state with delay based on index
+        hidden: { opacity: 0, y: -10 },
+        visible: (i) => ({
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.05, // Stagger delay (5% per item)
-                duration: 0.3 // Animation duration
+                delay: i * 0.05,
+                duration: 0.3
             }
         })
     };
 
-    // Effect: Check and track viewport size
+    // Effect: Check and track viewport size to determine if this component should render
     useEffect(() => {
         const checkScreenSize = () => {
-            // Set isMobile state if width is between 344px-882px
+            // IMPORTANT: These breakpoints MUST match the logic in HeaderWrapper.jsx
+            // and Layout.jsx. This component renders only when width is between 344px-882px.
             setIsMobile(window.innerWidth >= 344 && window.innerWidth <= 882);
         };
-        
-        // Initial check on mount
-        checkScreenSize();
-        // Add resize listener for dynamic changes
-        window.addEventListener('resize', checkScreenSize);
-        
-        // Cleanup: Remove listener on unmount
-        return () => window.removeEventListener('resize', checkScreenSize);
-    }, []); // Empty dependency array = runs once on mount
 
-    // Effect: Close menu when clicking outside
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
+
+    // Effect: Close menu when clicking outside (standard pattern for off-canvas menus)
     useEffect(() => {
         const handleClickOutside = (e) => {
-            // Close menu if click is outside mobile-menu-container
             if (isMenuOpen && !e.target.closest('.mobile-menu-container')) {
                 setIsMenuOpen(false);
             }
         };
 
-        // Add click listener when menu is open
         document.addEventListener('mousedown', handleClickOutside);
-        
-        // Cleanup: Remove listener when menu closes or component unmounts
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isMenuOpen]); // Re-run when isMenuOpen changes
+    }, [isMenuOpen]);
 
-    // Don't render if not in mobile range
+    // Conditional rendering: If not in the mobile range, this component returns null,
+    // allowing NavBar to be rendered by HeaderWrapper.
     if (!isMobile) return null;
 
     return (
-        // Fixed header container
+        // Fixed header container for mobile.
+        // fixed top-0 left-0 right-0 z-50: Positions it to the top of the viewport.
+        // bg-[#f0e6d2]: Sets the background color.
+        // shadow-sm: Adds a subtle shadow.
+        // mobile-menu-container: Class for click-outside detection.
         <header className="fixed top-0 left-0 right-0 z-50 bg-[#f0e6d2] shadow-sm mobile-menu-container">
-            {/* Navigation bar with logo and menu button */}
+            {/* Navigation bar with logo and menu button.
+                h-16: Sets a fixed height of 64px for the mobile header. */}
             <nav className="h-16 flex items-center justify-between px-4">
-                {/* Logo link to homepage */}
-                <NavLink 
-                    to="/" 
-                    className={({ isActive }) => 
+                {/* Logo link */}
+                <NavLink
+                    to="/"
+                    className={({ isActive }) =>
                         `h-10 w-32 rounded flex items-center justify-center ${
                         isActive ? 'border-b-2 border-brand-primary' : ''
                         }`
@@ -83,29 +77,30 @@ const MobileHeader = () => {
                 {/* Hamburger menu button */}
                 <button
                     onClick={(e) => {
-                        e.stopPropagation(); // Prevent event bubbling
-                        setIsMenuOpen(prev => !prev); // Toggle menu state
+                        e.stopPropagation();
+                        setIsMenuOpen(prev => !prev);
                     }}
-                    className="bg-black p-2 focus:outline-none" // Styling
-                    aria-label="Menu" // Accessibility
+                    className="bg-black p-2 focus:outline-none"
+                    aria-label="Menu"
                 >
-                    {/* Toggle between menu and close icon */}
                     {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
                 </button>
 
-                {/* Animation wrapper for mobile menu */}
+                {/* Mobile menu (off-canvas) animation wrapper */}
                 <AnimatePresence>
-                    {/* Only render when menu is open */}
                     {isMenuOpen && (
                         <motion.div
-                            key="mobile-menu" // Unique key for animation
-                            initial={{ opacity: 0, y: -10 }} // Start state
-                            animate={{ opacity: 1, y: 0 }} // Animate in
-                            exit={{ opacity: 0, y: -10 }} // Animate out
-                            transition={{ duration: 0.3, ease: 'easeOut' }} // Animation config
-                            className="fixed inset-0 bg-white mt-16 z-40 p-6" // Styling
+                            key="mobile-menu"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            // fixed inset-0: Covers the whole screen.
+                            // bg-white: Background for the menu.
+                            // mt-16: Pushes the menu content down, below the fixed header (h-16 = 64px).
+                            // z-40: Stacks below the header but above other page content.
+                            className="fixed inset-0 bg-white mt-16 z-40 p-6"
                         >
-                            {/* Menu items container */}
                             <nav className="max-w-175 flex flex-col space-y-6">
                                 {[
                                     { path: "/", name: "Home" },
@@ -115,23 +110,21 @@ const MobileHeader = () => {
                                     { path: "/bookings", name: "Bookings" },
                                     { path: "/contact", name: "Contact" }
                                 ].map((item, index) => (
-                                    // Animated menu item wrapper
                                     <motion.div
-                                        key={item.path} // Unique key
-                                        custom={index} // Pass index for stagger
-                                        variants={itemVariants} // Animation variants
-                                        initial="hidden" // Initial state
-                                        animate="visible" // Animated state
+                                        key={item.path}
+                                        custom={index}
+                                        variants={itemVariants}
+                                        initial="hidden"
+                                        animate="visible"
                                     >
-                                        {/* Actual navigation link */}
-                                        <NavLink 
+                                        <NavLink
                                             to={item.path}
-                                            className={({ isActive }) => 
+                                            className={({ isActive }) =>
                                                 `${baseStyle} ${isActive ? activeStyle : ''}`
                                             }
                                             onClick={(e) => {
-                                                e.stopPropagation(); // Prevent event bubbling
-                                                setIsMenuOpen(false); // Close menu on click
+                                                e.stopPropagation();
+                                                setIsMenuOpen(false);
                                             }}
                                         >
                                             {item.name}
