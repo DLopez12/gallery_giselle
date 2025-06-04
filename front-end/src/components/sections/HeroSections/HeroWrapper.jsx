@@ -5,7 +5,7 @@ import MobileHero from './MobileHero';
 
 // Array of hero image paths. These should be accessible from your public folder.
 const HERO_IMAGES = [
-  '/images/hero_engagment.avif',
+  '/images/hero_engagement.avif',
   '/images/hero_family.avif',
   '/images/hero_portrait.avif',
   '/images/hero_graduate.avif',
