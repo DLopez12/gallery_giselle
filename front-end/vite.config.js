@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteCompression from 'vite-plugin-compression'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   server: {
@@ -26,6 +27,7 @@ export default defineConfig({
   },
   plugins: [
   react(),
+  tailwindcss(), // Add Tailwind CSS plugin
   viteCompression({ // Add the compression plugin here
     verbose: true, // Output compression info to console
     disable: false, // Enable compression
