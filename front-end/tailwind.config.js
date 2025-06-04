@@ -19,13 +19,6 @@ export default {
         'tablet': {'min': '883px', 'max': '1024px'},
         'desktop': {'min': '1025px'},
       },
-      colors: {
-        'gallery-brown': '#3c2415',
-        'gallery-neutral': '#e2dbd4',
-        'gallery-tan': '#b69675',
-        'gallery-blue': '#98b3c5',
-        'gallery-tan-light': '#cdb397',
-      },
       aspectRatio: {
         'photo': '3 / 2',
         'portrait': '2 / 3',
