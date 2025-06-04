@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
@@ -22,30 +21,28 @@ export default defineConfig({
       'react-dom',
       'react-router-dom',
       'axios',
-      'tailwindcss',
       '@fontsource-variable/hanken-grotesk',
     ],
   },
   plugins: [
-    react(),
-    tailwindcss(),
-    viteCompression({ // Add the compression plugin here
-      verbose: true, // Output compression info to console
-      disable: false, // Enable compression
-      deleteOriginFile: false, // Keep original files
-      threshold: 10240, // Compress files larger than 10KB
-      algorithm: 'gzip', // Use gzip compression
-      ext: '.gz', // Outputfiles with .gz extension
-    }),
-    viteCompression({
-      verbose: true,
-      disable: false,
-      deleteOriginFile: false,
-      threshold: 10240,
-      algorithm: 'brotliCompress', // Use Brotli compression
-      ext: '.br', // Output files with .br extension
-    }),
-  ],
+  react(),
+  viteCompression({ // Add the compression plugin here
+    verbose: true, // Output compression info to console
+    disable: false, // Enable compression
+    deleteOriginFile: false, // Keep original files
+    threshold: 10240, // Compress files larger than 10KB
+    algorithm: 'gzip', // Use gzip compression
+    ext: '.gz', // Outputfiles with .gz extension
+  }),
+  viteCompression({
+    verbose: true,
+    disable: false,
+    deleteOriginFile: false,
+    threshold: 10240,
+    algorithm: 'brotliCompress', // Use Brotli compression
+    ext: '.br', // Output files with .br extension
+  }),
+],
   build: {
     outDir: 'dist',
     rollupOptions: {

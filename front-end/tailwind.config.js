@@ -1,53 +1,41 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: 'jit', // Enable Just-In-Time mode for faster builds
+  mode: 'jit',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
+      // Merged transitionProperty
       transitionProperty: {
         'header': 'padding, margin',
+        'menu': 'opacity, transform', // Now both are included
       },
-      // 1. Breakpoints (Mobile, Tablet, Desktop)
+      // ... other configs ...
       screens: {
-        'mobile': {'min': '344px', 'max': '882px'}, // Mobile range
-        'tablet': {'min': '883px', 'max': '1024px'}, // Tablet range
-        'desktop': {'min': '1025px'}, // Desktop and larger
+        'mobile': {'min': '344px', 'max': '882px'},
+        'tablet': {'min': '883px', 'max': '1024px'},
+        'desktop': {'min': '1025px'},
       },
-      // 2. Color Palette 
       colors: {
-        brand: {
-          primary: "#00a6a6",  // Vibrant teal
-          secondary: "#f0e6d2",  // Warm cream
-          dark: "#0a0a23",     // Deep navy
-        },
-        // Photo-specific grayscale
-        photo: {
-          black: "#000000", // Pure black
-          white: "#fafafa", // Off-white
-        }
+        'gallery-brown': '#3c2415',
+        'gallery-neutral': '#e2dbd4',
+        'gallery-tan': '#b69675',
+        'gallery-blue': '#98b3c5',
+        'gallery-tan-light': '#cdb397',
       },
-
-      // 3. Aspect Ratios
       aspectRatio: {
         'photo': '3 / 2',
         'portrait': '2 / 3',
         'square': '1 / 1',
         'panorama': '16 / 9',
       },
-
-      // 4. Typography
       fontFamily: {
         display: ['"Hanken Grotesk Variable"', 'sans-serif'],
         sans: ['"Hanken Grotesk Variable"', 'sans-serif'],
       },
-
-      // 5. Add transition property for menu (optional but recommended)
-      transitionProperty: {
-        'menu': 'opacity, transform' // Enables smooth transitions for both properties
-      }
     },
   },
   plugins: [
