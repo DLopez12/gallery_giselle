@@ -1,28 +1,18 @@
 // src/components/layout/sections/HeroSections/MobileHero.jsx
 import React from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'; // Assumed installed
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 const MobileHero = ({ currentImage, currentImageIndex, totalImages, goToNext, goToPrev, headerHeight }) => {
   return (
-    // Outer container for the Hero section on mobile.
-    // relative: Establishes a positioning context for its absolutely positioned children.
-    // w-screen: Ensures it spans the full width of the viewport.
-    // h-full: Crucial for filling the available height of its parent (the <main> element).
-    // overflow-hidden: Prevents content from overflowing.
-    <div className="relative w-screen h-full overflow-hidden">
-      {/* Background Image Container */}
-      {/* absolute inset-0: Positions this div to cover the entire area of its relative parent. */}
-      {/* bg-cover bg-center: Ensures the background image covers the area and is centered. */}
-      {/* transition-opacity duration-700 ease-in-out: For smooth image transitions. */}
+    // ADDED: flex flex-col
+    <div className="relative h-full overflow-hidden flex flex-col flex-grow min-h-0">
       <div
         className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
         style={{ backgroundImage: `url(${currentImage})` }}
       >
-        {/* Optional: Semi-transparent overlay */}
         <div className="absolute inset-0 bg-black opacity-30"></div>
       </div>
 
-      {/* Navigation Arrows */}
       <div className="absolute inset-0 flex items-center justify-between p-2 z-10">
         <button
           onClick={goToPrev}
@@ -40,12 +30,10 @@ const MobileHero = ({ currentImage, currentImageIndex, totalImages, goToNext, go
         </button>
       </div>
 
-      {/* Image Counter */}
       <div className="absolute bottom-3 right-3 bg-black/40 text-white px-3 py-1 rounded-lg text-sm z-10">
         {currentImageIndex + 1} / {totalImages}
       </div>
 
-      {/* Mobile-specific hero text/CTA (currently commented out) */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center z-10 p-4">
         {/* Uncomment and customize if you want text on mobile hero */}
         {/* <button className="mt-6 px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-xl hover:bg-blue-700 transition duration-300">
