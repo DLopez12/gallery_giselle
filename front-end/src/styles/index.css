@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+:root {
+  --gallery-brown: #3c2415;
+  --gallery-neutral: #e2dbd4;
+  --gallery-tan: #b69675;
+  --gallery-blue: #98b3c5;
+  --gallery-tan-light: #cdb397;
+}
+
 /* ======================
    Mobile Menu Animations
    ====================== */
