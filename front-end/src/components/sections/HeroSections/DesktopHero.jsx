@@ -16,14 +16,14 @@ const DesktopHero = ({ currentImage, currentImageIndex, totalImages, goToNext, g
       <div className="absolute inset-0 flex items-center justify-between p-8 z-10">
         <button
           onClick={goToPrev}
-          className="p-4 rounded-full text-white bg-white/20 hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+          className="p-4 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
           aria-label="Previous image"
         >
           <ChevronLeftIcon className="h-10 w-10" />
         </button>
         <button
           onClick={goToNext}
-          className="p-4 rounded-full text-white bg-white/20 hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+          className="p-4 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
           aria-label="Next image"
         >
           <ChevronRightIcon className="h-10 w-10" />

@@ -16,14 +16,14 @@ const MobileHero = ({ currentImage, currentImageIndex, totalImages, goToNext, go
       <div className="absolute inset-0 flex items-center justify-between p-2 z-10">
         <button
           onClick={goToPrev}
-          className="p-2 bg-white/30 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+          className="p-2 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
           aria-label="Previous image"
         >
           <ChevronLeftIcon className="h-6 w-6" />
         </button>
         <button
           onClick={goToNext}
-          className="p-2 bg-white/30 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+          className="p-2 rounded-full text-white hover:bg-white/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
           aria-label="Next image"
         >
           <ChevronRightIcon className="h-6 w-6" />
