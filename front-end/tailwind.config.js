@@ -13,6 +13,17 @@ export default {
         'header': 'padding, margin',
         'menu': 'opacity, transform', // Now both are included
       },
+      // Keyframes for fade-in-scale animation
+      keyframes: {
+        "fade-in-scale": {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transfrom: 'scale(1)' },
+        },
+      },
+      // Animation for fade-in-scale
+      animation: {
+        "fade-in-scale": "fade-in-scale 0.2s ease-out forwards",
+      },
       // ... other configs ...
       screens: {
         'mobile': {'min': '344px', 'max': '882px'},
