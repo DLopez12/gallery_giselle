@@ -7,9 +7,12 @@
     "start:frontend": "pnpm --filter front-end dev",
     "start:backend": "pnpm --filter back-end develop",
     "install:all": "pnpm install",
-    "dev": "pnpm --parallel --stream start:frontend start:backend"
+    "dev": "concurrently \"pnpm run start:frontend\" \"pnpm run start:backend\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
