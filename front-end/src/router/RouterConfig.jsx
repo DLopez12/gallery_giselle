@@ -1,4 +1,4 @@
-// RouterConfig.jsx
+// src/router/RouterConfig.jsx
 import { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -10,32 +10,45 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 // --- Page Imports ---
 import HomePage from '../pages/HomePage';
-import Services from '../pages/Services';
+import Services from '../pages/Services'; // The main "All Services" page
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import Bookings from '../pages/Bookings';
 
-import { retryImport } from '../utils/retryImport';
-
-
-// --- Corrected Imports ---
+// Corrected Imports
 // Only lazy import PortfolioLanding once
-const PortfolioLanding = lazy(() => retryImport(() => import('../pages/PortfolioLanding')));
+const PortfolioLanding = lazy(() => import('../pages/PortfolioLanding')); // Removed retryImport for simplicity unless explicitly needed
 // Import GalleryPage, which replaces PortfolioCategory
-const GalleryPage = lazy(() => retryImport(() => import('../pages/GalleryPage')));
+const GalleryPage = lazy(() => import('../pages/GalleryPage'));
+
+// NEW: Import the ServiceCategoryPage
+const ServiceCategoryPage = lazy(() => import('../pages/ServiceCategoryPage')); // Removed retryImport for simplicity unless explicitly needed
+
 
 // --- Router Configuration ---
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <NotFound />,
+    errorElement: <NotFound />, // Catch errors for children routes
     children: [
       { index: true, element: <HomePage /> },
-      // Optional: Keep /home if you want it to explicitly go to HomePage too
       { path: "home", element: <HomePage /> },
 
-      { path: "services", element: <Services /> },
+      // --- Services Routes ---
+      { path: "services", element: <Services /> }, // Route for "All Services" page
+      // NEW: Dynamic route for specific service categories
+      {
+        path: "services/:categorySlug", // e.g., /services/family-portraits
+        element: (
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ServiceCategoryPage /> {/* Render the generic ServiceCategoryPage */}
+            </Suspense>
+          </ErrorBoundary>
+        ),
+      },
+
       { path: "about", element: <About /> },
       { path: "contact", element: <Contact /> },
       { path: "bookings", element: <Bookings /> },
@@ -53,14 +66,12 @@ const router = createBrowserRouter([
         ),
       },
       // 2. Dynamic Gallery Pages (e.g., /portfolio/weddings-elopements)
-      // This single route handles all your categories: weddings, couples, graduates
       {
-        // IMPORTANT: Ensure the slug matches your category slugs in Strapi (e.g., 'weddings-elopements')
         path: "portfolio/:categorySlug",
         element: (
           <ErrorBoundary>
             <Suspense fallback={<LoadingSpinner />}>
-              <GalleryPage /> {/* This is the component that will fetch and display the gallery */}
+              <GalleryPage />
             </Suspense>
           </ErrorBoundary>
         ),
