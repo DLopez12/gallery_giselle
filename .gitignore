@@ -40,3 +40,4 @@ database/data.db*
 # Other common ignored files
 .DS_Store               # macOS specific
 Thumbs.db               # Windows specific
+node_modules
