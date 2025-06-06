@@ -514,6 +514,42 @@ export interface ApiGraduateGraduate extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiServiceService extends Struct.CollectionTypeSchema {
+  collectionName: 'services';
+  info: {
+    displayName: 'Service';
+    pluralName: 'services';
+    singularName: 'service';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['Family Portraits', 'Grad Photos', 'Portraits', 'Events & Parties']
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    featured: Schema.Attribute.Boolean;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service.service'
+    > &
+      Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal;
+    priceDescription: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiWeddingAndElopementWeddingAndElopement
   extends Struct.CollectionTypeSchema {
   collectionName: 'wedding_and_elopements';
@@ -1064,6 +1100,7 @@ declare module '@strapi/strapi' {
       'api::carousel-item.carousel-item': ApiCarouselItemCarouselItem;
       'api::couple.couple': ApiCoupleCouple;
       'api::graduate.graduate': ApiGraduateGraduate;
+      'api::service.service': ApiServiceService;
       'api::wedding-and-elopement.wedding-and-elopement': ApiWeddingAndElopementWeddingAndElopement;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
