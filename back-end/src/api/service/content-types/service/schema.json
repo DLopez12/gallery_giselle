@@ -14,9 +14,6 @@
     "title": {
       "type": "string"
     },
-    "description": {
-      "type": "text"
-    },
     "price": {
       "type": "decimal"
     },
@@ -44,6 +41,9 @@
         "Portraits",
         "Events & Parties"
       ]
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }
