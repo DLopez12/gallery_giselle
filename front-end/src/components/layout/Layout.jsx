@@ -8,35 +8,36 @@ import Footer from './Footer';
 export default function Layout() {
   const location = useLocation();
 
-  const [isMobileLayout, setIsMobileLayout] = useState(false);
-  const [currentHeaderHeight, setCurrentHeaderHeight] = useState(88);
+  const [currentHeaderHeight, setCurrentHeaderHeight] = useState(96);
 
   useEffect(() => {
     const checkScreenSize = () => {
       const isMobile = window.innerWidth >= 344 && window.innerWidth <= 882;
-      setIsMobileLayout(isMobile);
-      setCurrentHeaderHeight(isMobile ? 64 : 88);
+      setCurrentHeaderHeight(isMobile ? 64 : 96);
     };
 
     if (typeof window !== 'undefined') {
-      checkScreenSize();
-      window.addEventListener('resize', checkScreenSize);
+      checkScreenSize(); // Initial measurement on component mount
+      window.addEventListener('resize', checkScreenSize); // Update on window resize
     }
 
     return () => {
+      // Clean up the event listener when the component unmounts
       if (typeof window !== 'undefined') {
         window.removeEventListener('resize', checkScreenSize);
       }
     };
-  }, []);
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
 
   return (
     <div className="min-h-screen flex flex-col">
       <HeaderWrapper />
-      <div style={{ height: `${currentHeaderHeight}px` }} className="w-full"></div>
-      <main className="flex-grow min-h-0 flex flex-col">
+      <main 
+        className="flex-grow min-h-0 flex flex-col"
+        style={{ paddingTop: `${currentHeaderHeight}px` }}
+      >
         <AnimatePresence mode="wait">
-          <Outlet location={location} />
+          <Outlet context={{ currentHeaderHeight }} location={location} />
         </AnimatePresence>
       </main>
       <Footer className="bg-black text-white py-8" />
