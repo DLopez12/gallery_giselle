@@ -80,6 +80,8 @@ export default function Carousel({ children, headerHeight }) {
     // Base classes for loading/error/no-items states.
 
     const baseClasses = "flex justify-center items-center h-64 rounded-lg shadow-md";
+    console.log("Carousel: headerHeight prop received:", headerHeight);
+    console.log("Carousel: Calculated height for div:", `calc(100vh - ${headerHeight}px)`);
 
     if (loading) {
         return (
@@ -110,7 +112,7 @@ export default function Carousel({ children, headerHeight }) {
         // This outer div is where the height calculation and top margin go.
         // It wraps the 'children' which will be your HeroWrapper.
         <div
-            className="relative w-full overflow-hidden max-h-[800px]"
+            className="relative w-full overflow-hidden"
             style={{ height: `calc(100vh - ${headerHeight}px)` }}
         >
             {/* The 'children' function is called here, rendering HeroWrapper with carouselItems */}

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'; // Impo
 import PropTypes from 'prop-types';
 import ResponsiveHero from './ResponsiveHero';
 
-const HeroWrapper = ({ carouselItems }) => {
+const HeroWrapper = ({ carouselItems, headerHeight }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const totalImages = carouselItems ? carouselItems.length : 0;
 
