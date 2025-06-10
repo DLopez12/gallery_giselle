@@ -26,8 +26,8 @@ export async function fetchAboutPage() {
         
         // Strapi's single types return data directly under the 'data' key.
         // If data exists, return the 'attributes' which contain the actual content fields.
-        if (response.data && response.data.data.attributes) {
-            return response.data.data.attributes; // Returns the content of the about page.
+        if (response.data && response.data.data) { // Check that 'data' exists at the top level and the nested 'data' exists
+            return response.data.data; // Return the content directly from response.data.data
         }
 
         // If no data attributes are found, log a waringin for debugging purposes.
