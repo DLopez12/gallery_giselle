@@ -3,13 +3,13 @@
 import { STRAPI_URL } from '../../config/strapi';
 
 /**
- * @function getStrapiImage
- * @description Constructs the full URL for an image hosted on Strapi.
+ * function getStrapiImage
+ * description Constructs the full URL for an image hosted on Strapi.
  * This function takes a Strapi image object (typically from a media field that has been populated)
  * and prepends the Strapi base URL to its relative path.
- * @param {Object} strapiImage - The populated Strapi image object (e.g., aboutContent.profilePicture).
+ * param {Object} strapiImage - The populated Strapi image object (e.g., aboutContent.profilePicture).
  * It is expected to have a 'url' property directly on it.
- * @returns {string|null} The full absolute URL of the image, or null if input is invalid.
+ * returns {string|null} The full absolute URL of the image, or null if input is invalid.
  */
 export const getStrapiImage = (strapiImage) => {
   // Checks if the strapiImage object exists and directly contains a 'url' property.
