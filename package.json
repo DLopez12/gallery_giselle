@@ -7,7 +7,9 @@
     "start:frontend": "pnpm --filter front-end dev",
     "start:backend": "pnpm --filter back-end develop",
     "install:all": "pnpm install",
-    "dev": "concurrently \"pnpm run start:frontend\" \"pnpm run start:backend\""
+    "dev": "concurrently \"pnpm run start:frontend\" \"pnpm run start:backend\"",
+    "build:frontend": "pnpm --filter front-end build",
+    "start:prod-local": "pnpm run build:frontend && concurrently \"pnpm --filter front-end preview\" \"pnpm --filter back-end develop\""
   },
   "keywords": [],
   "author": "",
