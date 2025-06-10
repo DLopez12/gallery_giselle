@@ -4,6 +4,10 @@
 // This is necessary to construct the full URL for images stored in Strapi.
 import { STRAPI_URL } from '../../config/strapi';
 
+// --- ADD THIS LOG HERE ---
+console.log("STRAPI_URL in image.js:", STRAPI_URL);
+// --- END LOG ---
+
 /**
  * function getStrapiImage
  * description Constructs the full URL for an image hosted on Strapi.
@@ -13,9 +17,20 @@ import { STRAPI_URL } from '../../config/strapi';
  * returns {string|null} The full absolute URL of the image, or null if input is invalid.
  */
 export const getStrapiImage = (strapiImage) => {
+  // --- ADD THESE LOGS HERE ---
+  console.log("--- DEBUGGING getStrapiImage ---");
+  console.log("strapiImage object received:", strapiImage);
+  console.log("Is strapiImage truthy?", !!strapiImage);
+  console.log("Does strapiImage have 'url' property?", Object.prototype.hasOwnProperty.call(strapiImage, 'url'));
+  console.log("Value of strapiImage.url:", strapiImage?.url); // Use optional chaining for safety
+  console.log("Type of strapiImage.url:", typeof strapiImage?.url);
+  console.log("Is strapiImage.url truthy?", !!strapiImage?.url);
+  console.log("--- END DEBUGGING getStrapiImage ---");
+  // --- END LOGS ---
+
   // Checks if the necessary image data exists to construct a valid URL.
   // Strapi image objects typically have a 'data' property with 'attributes.url'.
-  if (strapiImage && strapiImage.data && strapiImage.data.attributes && strapiImage.data.attributes.url) {
+  if (strapiImage && strapiImage.url) {
     // Concatenates the base Strapi URL with the image's relative URL.
     // This forms the complete path to access the image.
     return `${STRAPI_URL}${strapiImage.url}`;
