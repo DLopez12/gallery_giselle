@@ -1,47 +1,43 @@
 // front-end/src/lib/strapi/image.js
 
-// Imports the base API URL from the Strapi configuration.
-// This is necessary to construct the full URL for images stored in Strapi.
-import { STRAPI_URL } from '../../config/strapi';
-
-// --- ADD THIS LOG HERE ---
-console.log("STRAPI_URL in image.js:", STRAPI_URL);
-// --- END LOG ---
+import { STRAPI_URL } from '../../config/strapi'; // This now remains with /api
 
 /**
- * function getStrapiImage
- * description Constructs the full URL for an image hosted on Strapi.
- * This function takes a Strapi image object (typically from a media field)
- * and prepends the Strapi base URL to its relative path.
- * param {Object} strapiImage - The Strapi image object (e.g., response.data.attributes.profilePicture.data).
- * returns {string|null} The full absolute URL of the image, or null if input is invalid.
+ * @function getStrapiImage
+ * @description Constructs the full URL for an image hosted on Strapi.
+ * This function takes a Strapi image object (typically from a media field that has been populated)
+ * and prepends the Strapi base URL to its relative path. It specifically handles cases
+ * where the base STRAPI_URL includes an '/api' suffix, which needs to be removed for static assets.
+ * @param {Object} strapiImage - The populated Strapi image object (e.g., aboutContent.profilePicture).
+ * It is expected to have a 'url' property directly on it.
+ * @returns {string|null} The full absolute URL of the image, or null if input is invalid.
  */
 export const getStrapiImage = (strapiImage) => {
-  // --- ADD THESE LOGS HERE ---
+  // Debugging logs (you can remove these once the image displays correctly)
   console.log("--- DEBUGGING getStrapiImage ---");
+  console.log("STRAPI_URL in image.js (before modification):", STRAPI_URL);
   console.log("strapiImage object received:", strapiImage);
   console.log("Is strapiImage truthy?", !!strapiImage);
   console.log("Does strapiImage have 'url' property?", Object.prototype.hasOwnProperty.call(strapiImage, 'url'));
-  console.log("Value of strapiImage.url:", strapiImage?.url); // Use optional chaining for safety
+  console.log("Value of strapiImage.url:", strapiImage?.url);
   console.log("Type of strapiImage.url:", typeof strapiImage?.url);
   console.log("Is strapiImage.url truthy?", !!strapiImage?.url);
   console.log("--- END DEBUGGING getStrapiImage ---");
-  // --- END LOGS ---
 
-  // Checks if the necessary image data exists to construct a valid URL.
-  // Strapi image objects typically have a 'data' property with 'attributes.url'.
   if (strapiImage && strapiImage.url) {
-    // Concatenates the base Strapi URL with the image's relative URL.
-    // This forms the complete path to access the image.
-    return `${STRAPI_URL}${strapiImage.url}`;
+    // Check if STRAPI_URL ends with '/api' and remove it for static asset URLs
+    const baseUrlForAssets = STRAPI_URL.endsWith('/api')
+      ? STRAPI_URL.slice(0, -4) // Removes the last 4 characters ("/api")
+      : STRAPI_URL; // If no '/api', use as is
+
+    return `${baseUrlForAssets}${strapiImage.url}`;
   }
-  // If the necessary data is missing, returns null to indicate an invalid image source.
+
   console.warn("Invalid Strapi image object provided for URL construction:", strapiImage);
   return null;
 };
 
-// You can keep formatStrapiImage if you use it elsewhere,
-// but it's not the one causing the current error.
+// You can keep formatStrapiImage if you use it elsewhere, otherwise it can be removed.
 // export const formatStrapiImage = (strapiData) => ({
 //   src: `${STRAPI_URL}${strapiData.attributes.url}`,
 //   alt: strapiData.attributes.alternativeText || 'Photography Portfolio',
