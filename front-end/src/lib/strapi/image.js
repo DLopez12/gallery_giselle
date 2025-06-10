@@ -1,29 +1,32 @@
 // front-end/src/lib/strapi/image.js
 
+// Imports the base API URL from the Strapi configuration.
+// This is necessary to construct the full URL for images stored in Strapi.
 import { STRAPI_URL } from '../../config/strapi';
 
 /**
  * function getStrapiImage
  * description Constructs the full URL for an image hosted on Strapi.
- * This function takes a Strapi image object (typically from a media field that has been populated)
+ * This function takes a Strapi image object (typically from a media field)
  * and prepends the Strapi base URL to its relative path.
- * param {Object} strapiImage - The populated Strapi image object (e.g., aboutContent.profilePicture).
- * It is expected to have a 'url' property directly on it.
+ * param {Object} strapiImage - The Strapi image object (e.g., response.data.attributes.profilePicture.data).
  * returns {string|null} The full absolute URL of the image, or null if input is invalid.
  */
 export const getStrapiImage = (strapiImage) => {
-  // Checks if the strapiImage object exists and directly contains a 'url' property.
-  // This structure is common when single media fields are populated.
-  if (strapiImage && strapiImage.url) {
+  // Checks if the necessary image data exists to construct a valid URL.
+  // Strapi image objects typically have a 'data' property with 'attributes.url'.
+  if (strapiImage && strapiImage.data && strapiImage.data.attributes && strapiImage.data.attributes.url) {
     // Concatenates the base Strapi URL with the image's relative URL.
-    return `<span class="math-inline">\{STRAPI\_URL\}</span>{strapiImage.url}`;
+    // This forms the complete path to access the image.
+    return `${STRAPI_URL}${strapiImage.url}`;
   }
-  // If the necessary data is missing, logs a warning and returns null.
+  // If the necessary data is missing, returns null to indicate an invalid image source.
   console.warn("Invalid Strapi image object provided for URL construction:", strapiImage);
   return null;
 };
 
-// Keep formatStrapiImage if you use it elsewhere, otherwise it can be removed.
+// You can keep formatStrapiImage if you use it elsewhere,
+// but it's not the one causing the current error.
 // export const formatStrapiImage = (strapiData) => ({
 //   src: `${STRAPI_URL}${strapiData.attributes.url}`,
 //   alt: strapiData.attributes.alternativeText || 'Photography Portfolio',
