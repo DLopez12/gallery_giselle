@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DynamicLegibleCounter from '../../common/DynamicLegibleCounter';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'; // Or /24/solid for filled icons
+
 
 const ResponsiveHero = ({
   carouselItems,
@@ -83,21 +85,23 @@ const ResponsiveHero = ({
       {/* Navigation Buttons (Often similar for mobile/desktop, use Tailwind for sizing/placement if needed) */}
       <button
         onClick={goToPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-sm rounded-full text-white text-2xl z-10 transition-colors duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/80"
+        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-(--gallery-tan-light)/10 backdrop-blur-sm rounded-full text-white z-10 transition-colors duration-300 
+          hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/80 flex items-center justify-center"
         aria-label="Previous image"
       >
-        &#8249;
+        <ChevronLeftIcon className="w-8 h-8" />
       </button>
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-sm rounded-full text-white text-2xl z-10 transition-colors duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/80"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-(--gallery-tan-light)/10 backdrop-blur-sm rounded-full text-white z-10 transition-colors duration-300 
+          hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/80 flex items-center justify-center"
         aria-label="Next image"
       >
-        &#8250;
+        <ChevronRightIcon className="w-8 h-8" />
       </button>
 
       {/* Dynamic Counter - positioned at the bottom center */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute  bottom-4 left-1/2 -translate-x-1/2 z-10">
         <DynamicLegibleCounter
           currentCount={currentImageIndex + 1}
           totalCount={totalImages}
