@@ -1,5 +1,3 @@
-import { config } from "process";
-
 export default ({ env }) => ({
     upload: {
         config: {
@@ -15,5 +13,5 @@ export default ({ env }) => ({
             },
         },
     },
-    
+
 });
