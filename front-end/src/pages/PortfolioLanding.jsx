@@ -11,8 +11,8 @@ const categories = [
     ariaLabel: "View Wedding and Elopement Photography Portfolio"
   },
   {
-    title: "Couples",
-    description: "Intimate moments for two.",
+    title: "Family Portraits",
+    description: "Couples, Families, and Maternity",
     slug: "couples",
     imageUrl: "/images/stock_couples_photo.avif", // Ensure these paths are correct
     ariaLabel: "View Couples Photography Portfolio"

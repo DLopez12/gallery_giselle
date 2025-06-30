@@ -154,24 +154,27 @@ const NavBar = () => {
     // --- Main Navigation Bar Render ---
     return (
         <nav
-            className="fixed flex p-8 mx-auto bg-(--gallery-cream) top-0 w-full z-50 "
+            className="fixed flex p-8 mx-auto bg-(--gallery-cream) top-0 w-full z-50"
             aria-label="Main navigation"
         >
-            {/* Site Logo/Home Link */}
-                <NavLink to="/" aria-label="Go to homepage" className="mr-auto">
-                    <img
-                        src="/images/nav_title.png"
-                        alt="Site logo"
-                        className="h-12 w-auto"
-                    />
-                </NavLink>
+            
 
                 {/* Primary Navigation Menu Container */}
                 <div
-                    className="flex space-x-1 items-center"
+                    className="flex space-x-1 items-center mx-auto"
                     role="navigation"
                     aria-label="Primary menu"
                 >
+                    {/* Site Logo/Home Link */}
+                    <NavLink to="/" aria-label="Go to homepage" className="mr-auto">
+                        <img
+                            src="/images/nav_title.png"
+                            alt="Site logo"
+                            className="h-12 w-auto"
+                        />
+                    </NavLink>
+
+
                     <ul className="flex space-x-1 items-center list-none p-0 m-0">
                         {navItems.map((item, index) => (
                             <li

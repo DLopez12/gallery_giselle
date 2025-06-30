@@ -517,7 +517,7 @@ export interface ApiCoupleCouple extends Struct.CollectionTypeSchema {
 export interface ApiGraduateGraduate extends Struct.CollectionTypeSchema {
   collectionName: 'graduates';
   info: {
-    displayName: 'Graduate';
+    displayName: 'Graduates';
     pluralName: 'graduates';
     singularName: 'graduate';
   };
