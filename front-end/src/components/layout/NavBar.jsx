@@ -161,7 +161,7 @@ const NavBar = () => {
 
                 {/* Primary Navigation Menu Container */}
                 <div
-                    className="flex space-x-1 items-center mx-auto"
+                    className="flex justify-between w-full"
                     role="navigation"
                     aria-label="Primary menu"
                 >
