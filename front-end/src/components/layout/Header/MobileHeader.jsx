@@ -67,7 +67,7 @@ const MobileHeader = () => {
                     to="/"
                     className={({ isActive }) =>
                         `h-10 w-32 rounded flex items-center justify-center ${
-                        isActive ? 'border-b-2 border-brand-primary' : ''
+                        isActive ? '' : ''
                         }`
                     }
                 >
