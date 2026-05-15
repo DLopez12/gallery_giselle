@@ -48,7 +48,7 @@ export default function Carousel({ children, headerHeight }) {
                     const imagePath = item.image?.url; 
 
                     if (imagePath) {
-                        imageUrl = `${STRAPI_UPLOAD_BASE_URL}${imagePath}`;
+                        imageUrl = imagePath.startsWith('http') ? imagePath : `${STRAPI_UPLOAD_BASE_URL}${imagePath}`;
                     } else {
                         imageUrl = 'https://placehold.co/1920x1080/cccccc/000000?text=No+Image'; // Fallback
                         console.warn(`No image URL found for carousel item ${item.id || 'unknown'}. Using fallback.`);
